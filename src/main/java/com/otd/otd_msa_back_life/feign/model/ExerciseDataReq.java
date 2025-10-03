@@ -1,15 +1,15 @@
 package com.otd.otd_msa_back_life.feign.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Builder
-public class ChallengeProgressUpdateReq {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ExerciseDataReq {
     private Long userId;
     private Long recordId;
     private String name;

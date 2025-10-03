@@ -1,6 +1,8 @@
 package com.otd.otd_msa_back_life.meal.service;
 
-import com.otd.otd_msa_back_life.configuration.model.UserPrincipal;
+import com.otd.otd_msa_back_life.feign.ChallengeFeignClient;
+import com.otd.otd_msa_back_life.feign.model.ExerciseDataReq;
+import com.otd.otd_msa_back_life.feign.model.MealDataReq;
 import com.otd.otd_msa_back_life.meal.entity.*;
 import com.otd.otd_msa_back_life.meal.model.InputMealRecordDetailDto;
 import com.otd.otd_msa_back_life.meal.model.InputMealRecordReq;
@@ -11,9 +13,11 @@ import com.otd.otd_msa_back_life.meal.repository.MealRecordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Limit;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class MealService {
     private final MealFoodMakeDbRepository mealFoodMakeDbRepository;
     private final MealRecordRepository mealRecordRepository;
     private final MealRecordDetailRepository mealRecordDetailRepository;
+    private final ChallengeFeignClient challengeFeignClient;
 
     public List<MealFoodDb> findFood(String foodName)
     {
@@ -126,7 +131,23 @@ public class MealService {
                 .totalNatrium(totalNatrium)
                 .build();
         mealRecordDetail = mealRecordDetailRepository.save(mealRecordDetail);
-        
+
+        Double sumProtein = mealRecordDetailRepository.findTotalProteinByUserAndDay(userId, mealRecordReq.getMealDay());
+
+        if (sumProtein >= 100) {
+            String challengeName = "단백질 섭취";
+            MealDataReq feign = MealDataReq.builder()
+                    .userId(userId)
+                    .mealDay(mealRecordReq.getMealDay())
+                    .today(LocalDate.now())
+                    .totalProtein(sumProtein)
+                    .name(challengeName)
+                    .build();
+            ResponseEntity<Integer> response = challengeFeignClient.updateProgressByMeal(feign);
+            Integer feignResult = response.getBody();
+        }
+
+
         return new MealSaveResultDto(recordIds.size(), recordIds, newUserFoodIds);
     }
 

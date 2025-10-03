@@ -12,12 +12,13 @@ import com.otd.otd_msa_back_life.exercise.model.ExerciseRecordWeeklyGetReq;
 import com.otd.otd_msa_back_life.exercise.repository.ExerciseCatalogRepository;
 import com.otd.otd_msa_back_life.exercise.repository.ExerciseRecordRepository;
 import com.otd.otd_msa_back_life.feign.ChallengeFeignClient;
-import com.otd.otd_msa_back_life.feign.model.ChallengeProgressUpdateReq;
+import com.otd.otd_msa_back_life.feign.model.ExerciseDataReq;
 import com.otd.otd_msa_back_life.feign.model.ChallengeRecordDeleteReq;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -70,7 +71,7 @@ public class ExerciseRecordService {
         Long recordId = exerciseRecordRepository.save(exerciseRecord).getExerciseRecordId();
         if (req.getReps() != null || req.getDistance() != null) {
             int count = countExerciseRecordByDate(userId, req.getStartAt().toLocalDate());
-            ChallengeProgressUpdateReq feign = ChallengeProgressUpdateReq.builder()
+            ExerciseDataReq feign = ExerciseDataReq.builder()
                     .userId(userId)
                     .recordId(recordId)
                     .name(exercise.getExerciseName())
@@ -79,7 +80,8 @@ public class ExerciseRecordService {
                     .count(count)
                     .today(LocalDate.now())
                     .build();
-            challengeFeignClient.updateProgressByExercise(feign);
+            ResponseEntity<Integer> response = challengeFeignClient.updateProgressByExercise(feign);
+            Integer feignResult = response.getBody();
         }
 
         return recordId;
@@ -147,7 +149,8 @@ public class ExerciseRecordService {
         exerciseRecordRepository.delete(record);
         int count = countExerciseRecordByDate(userId, record.getStartAt().toLocalDate());
         req.setCount(count);
-        challengeFeignClient.deleteRecordByExercise(req);
+        ResponseEntity<Integer> response = challengeFeignClient.deleteRecordByExercise(req);
+        Integer feignResult = response.getBody();
 //        exerciseRecordRepository.deleteByUserIdAndExerciseRecordId(userId, exerciseRecordId);
     }
 
