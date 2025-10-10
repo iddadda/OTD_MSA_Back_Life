@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -85,7 +86,7 @@ public class ExerciseRecordService {
                 .build();
         Long recordId = exerciseRecordRepository.save(exerciseRecord).getExerciseRecordId();
 
-        LocalDate recordDate = req.getStartAt().toLocalDate();
+        LocalDateTime recordDate = req.getStartAt();
         ResponseEntity<List<String>> response = challengeFeignClient.getActiveChallengeNames(userId, recordDate);
         List<String> activeChallenges = response.getBody();
         if (activeChallenges != null && !activeChallenges.isEmpty()) {

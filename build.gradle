@@ -30,7 +30,7 @@ ext {
 }
 
 dependencies {
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-loadbalancer'
     implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     // https://mvnrepository.com/artifact/io.hypersistence/hypersistence-utils-hibernate-63

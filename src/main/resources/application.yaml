@@ -7,7 +7,8 @@ server:
       force: true
 
 spring:
-
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: otd_life
   jackson:
@@ -72,7 +73,7 @@ mybatis:
 # 커뮤니티 파일 저장 루트(로컬 저장 시) — LocalFileStorageService에서 사용
 constants:
   file:
-    directory: "D:\\inha\\healthcare\\img\\item"
+    directory: "D:/inha/healthcare/img/item"
 
   comment:
     start-index: 0
@@ -80,4 +81,5 @@ constants:
 
   feign-client:
     challenge:
-      url: http://localhost:8082/api/OTD/challenge
+      name: otd-user
+      url: http://localhost:8082

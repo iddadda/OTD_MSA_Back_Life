@@ -1,6 +1,10 @@
 constants:
   file:
     directory: /home/download
+  feign-client:
+    challenge:
+      name: otd-user
+      url: http://otd-user:8080
 
 server:
   port: 8080
@@ -17,6 +21,8 @@ management:
 spring:
   cloud:
     kubernetes:
+      loadbalancer:
+        enabled: true
       discovery:
         enabled: true
       reload:
@@ -30,5 +36,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
 
