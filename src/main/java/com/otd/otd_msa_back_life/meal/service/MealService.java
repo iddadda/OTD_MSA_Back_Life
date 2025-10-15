@@ -200,6 +200,20 @@ public class MealService {
             MealRecord saved = mealRecordRepository.save(mealRecord);
             recordIds.add(saved.getMealId());
 
+
+
+            MealRecordDetail mealRecordDetail= MealRecordDetail.builder()
+                    .userId(userId)
+                    .mealRecordIds(mealRecordIds)
+                    .totalKcal(totalKcal)
+                    .totalProtein(totalProtein)
+                    .totalCarbohydrate(totalCarbohydrate)
+                    .totalFat(totalFat)
+                    .totalSugar(totalSugar)
+                    .totalNatrium(totalNatrium)
+                    .build();
+            mealRecordDetail = mealRecordDetailRepository.save(mealRecordDetail);
+
             Double sumProteinObj = mealRecordDetailRepository.findTotalProteinByUserAndDay(userId, mealRecordReq.getMealDay());
             double sumProtein = sumProteinObj == null ? 0.0 : sumProteinObj;
             log.info("[meal] user={}, day={}, sumProtein={}", userId, mealRecordReq.getMealDay(), sumProtein);
@@ -243,21 +257,7 @@ public class MealService {
                 }
             }
         }
-
-        MealRecordDetail mealRecordDetail= MealRecordDetail.builder()
-                .userId(userId)
-                .mealRecordIds(mealRecordIds)
-                .totalKcal(totalKcal)
-                .totalProtein(totalProtein)
-                .totalCarbohydrate(totalCarbohydrate)
-                .totalFat(totalFat)
-                .totalSugar(totalSugar)
-                .totalNatrium(totalNatrium)
-                .build();
-        mealRecordDetail = mealRecordDetailRepository.save(mealRecordDetail);
-        
         return new MealSaveResultDto( result!=0 || result2!=0  ? -1 : recordIds.size()  , recordIds, newUserFoodIds);
-
     }
 
     public List<MealRecord> mealMainListRes(Long userId , LocalDate mealDay) {
