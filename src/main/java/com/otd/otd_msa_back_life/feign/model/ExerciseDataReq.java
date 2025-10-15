@@ -15,8 +15,10 @@ public class ExerciseDataReq {
     private Long recordId;
     private String name;
     private Double record;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate recordDate;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate today;
     private int count;

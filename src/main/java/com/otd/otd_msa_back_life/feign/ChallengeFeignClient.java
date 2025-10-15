@@ -4,6 +4,7 @@ import com.otd.otd_msa_back_life.feign.model.ExerciseDataReq;
 import com.otd.otd_msa_back_life.feign.model.ChallengeRecordDeleteReq;
 import com.otd.otd_msa_back_life.feign.model.MealDataReq;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,9 @@ public interface ChallengeFeignClient {
     ResponseEntity<Integer> updateProgressByMeal(@RequestBody MealDataReq req);
 
     @GetMapping("/api/OTD/challenge/progress/challenges/{userId}")
-    ResponseEntity<List<String>> getActiveChallengeNames(@PathVariable("userId") Long userId
-            ,@RequestParam("recordDate") LocalDate recordDate);
+    ResponseEntity<List<String>> getActiveChallengeNames(
+            @PathVariable("userId") Long userId,
+            @RequestParam("recordDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate recordDate
+    );
 }
