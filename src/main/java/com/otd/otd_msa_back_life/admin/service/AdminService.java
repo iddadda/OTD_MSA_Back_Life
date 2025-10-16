@@ -201,7 +201,6 @@ public class AdminService {
 
         return dto;
     }
-    @Transactional
     public void removeUser(Long userId) {
         try {
             // 운동 기록 삭제
@@ -255,18 +254,13 @@ public class AdminService {
                 .build();
     }
 
-    @Transactional
+
     public ResultResponse<?> removeCommunity(Long postId) {
         int postResult = communityPostRepository.softDeleteByPostId(postId);
-        int likeCount = communityLikeRepository.deleteByPostId(postId);
-        int fileCount = communityPostFileRepository.deleteByPostId(postId);
-        int commentCount = mentRepository.deleteByPostId(postId);
+//        int likeCount = communityLikeRepository.deleteByPostId(postId);
+//        int fileCount = communityPostFileRepository.deleteByPostId(postId);
+//        int commentCount = mentRepository.deleteByPostId(postId);
 
-        int sum = postResult + likeCount + fileCount + commentCount;
-        log.info("Deleted postId={}, result: post={}, comment={}, like={}, file={}",
-                postId, postResult, commentCount, likeCount, fileCount);
-
-        return new ResultResponse<>(String.format("게시글 삭제 완료 (댓글 %d, 좋아요 %d, 파일 %d)"
-                , commentCount, likeCount, fileCount), sum);
+        return new ResultResponse<>("게시글 삭제 완료", postResult);
     }
 }
