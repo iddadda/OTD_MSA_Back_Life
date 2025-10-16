@@ -270,8 +270,12 @@ public class MealService {
 
 
     public GetMyDayDateDto getToDay (Long userId, LocalDate mealDay) {
+        LocalDate start = mealDay;
+        LocalDate end = mealDay.plusDays(1);
+
+
         BodyComposition bodyComposition = bodyCompositionRepository.findByUserIdAndCreatedDate(userId,mealDay);
-        List<ExerciseRecord> exerciseRecord = exerciseRecordRepository.findByUserIdAndCreatedDate(userId,mealDay);
+        List<ExerciseRecord> exerciseRecord = exerciseRecordRepository.findByUserIdAndStartDate(userId,mealDay);
 
         int totalKcal =0;
         for (ExerciseRecord record : exerciseRecord) {

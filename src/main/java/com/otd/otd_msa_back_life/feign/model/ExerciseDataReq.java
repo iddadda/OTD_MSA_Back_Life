@@ -21,7 +21,6 @@ public class ExerciseDataReq {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate today;
-
     private int count;
     private int totalKcal;
 }

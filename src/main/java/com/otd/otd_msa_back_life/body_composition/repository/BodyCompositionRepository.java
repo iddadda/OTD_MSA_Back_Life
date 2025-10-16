@@ -36,6 +36,8 @@ public interface BodyCompositionRepository extends JpaRepository<BodyComposition
             @Param("userId") Long userId,
             @Param("mealDay") LocalDate mealDay
     );
+
+
     @Query("""
             SELECT new com.otd.otd_msa_back_life.body_composition.model.MinMaxDateDto(MIN(b.createdAt), MAX(b.createdAt))
             FROM BodyComposition b WHERE b.userId = :userId

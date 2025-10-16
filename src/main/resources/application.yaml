@@ -22,7 +22,9 @@ spring:
 
   jackson:
     time-zone: Asia/Seoul
-
+    date-format: yyyy-MM-dd
+    serialization:
+      write-dates-as-timestamps: false
   servlet:
     multipart: # 파일 업로드(커뮤니티 첨부파일용)
       max-file-size: 15MB
