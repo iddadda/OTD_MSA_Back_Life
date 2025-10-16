@@ -47,9 +47,9 @@ public interface ExerciseRecordRepository extends JpaRepository<ExerciseRecord, 
     @Query("""
             select e from ExerciseRecord e
                 where e.userId = :userId
-                    and FUNCTION('DATE', e.createdAt) = :mealDay
+                    and FUNCTION('DATE', e.startAt) = :mealDay
             """)
-    List<ExerciseRecord> findByUserIdAndCreatedDate(
+    List<ExerciseRecord> findByUserIdAndStartDate(
             @Param("userId") Long userId,
             @Param("mealDay") LocalDate mealDay
     );
